@@ -11,10 +11,10 @@ console.log("Hello from Functions!")
  * Runs as a daily batch job.
  */
 serve(async (req) => {
-    const {name} = await req.json()
-    const data = {
-        message: `Hello ${name}!`,
-    }
+    // const {name} = await req.json()
+    // const data = {
+    //     message: `Hello ${name}!`,
+    // }
 
     const groups: Group[] = [{
         groupId: 1,
