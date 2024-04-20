@@ -1,16 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, Pressable, Image, StyleSheet} from 'react-native';
-import { useFonts, Lora_400Regular, Lora_700Bold } from "@expo-google-fonts/lora";
-
+import { View, Text, Button } from 'react-native';
 // import { fetchData } from './api/apiClient';
-
-
-const attendees = [
-  'https://i.imgur.com/OVO1P48.jpeg',  
-  'https://i.imgur.com/YLZpUuH.jpeg',
-  'https://i.imgur.com/tAfEMeW.jpeg',
-  'https://i.imgur.com/ktEiIHL.jpeg',
-];
 
 const HomeScreen = () => {
   useEffect(() => {
@@ -25,15 +15,6 @@ const HomeScreen = () => {
       console.log('Failed to fetch data:', error);
     }
   };
-
-  
-  let [fontsLoaded, fontError] = useFonts({
-    Lora_400Regular, Lora_700Bold
-  });
-
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
 
   // fetch Data from localhost:3000
   const fetchData = async () => {
@@ -51,8 +32,7 @@ const HomeScreen = () => {
   };
   
   
-      {/* <Text>Welcome to the Home Screen!a</Text>
-      <Button title="Load Data" onPress={loadData} /> */}
+      
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dedede'}}>
       <View style={styles.card}>
