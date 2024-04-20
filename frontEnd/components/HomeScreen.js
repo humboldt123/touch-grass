@@ -1,11 +1,23 @@
 import React, { useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Pressable, Image, StyleSheet} from 'react-native';
+import { useFonts, Lora_400Regular, Lora_700Bold } from "@expo-google-fonts/lora";
 // import { fetchData } from './api/apiClient';
+
 
 const HomeScreen = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  
+  const attendees = [
+    'https://i.imgur.com/OVO1P48.jpeg',  
+    'https://i.imgur.com/YLZpUuH.jpeg',
+    'https://i.imgur.com/tAfEMeW.jpeg',
+    'https://i.imgur.com/ktEiIHL.jpeg',
+  ];
+ 
+ 
 
   const loadData = async () => {
     try {
@@ -15,6 +27,14 @@ const HomeScreen = () => {
       console.log('Failed to fetch data:', error);
     }
   };
+
+  let [fontsLoaded, fontError] = useFonts({
+    Lora_400Regular, Lora_700Bold
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   // fetch Data from localhost:3000
   const fetchData = async () => {
