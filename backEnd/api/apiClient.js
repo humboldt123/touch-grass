@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000',  // Adjust the IP to match your Express server
+  baseURL: 'http://144.118.77.192:3000',  // Adjust the IP to match your Express server
   headers: {
     'Content-Type': 'application/json'
   }

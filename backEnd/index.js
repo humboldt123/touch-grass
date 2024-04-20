@@ -6,7 +6,7 @@ app.use(cors()); // Enable CORS
 app.use(express.json()); // Parse JSON bodies
 
 app.get('/', (req, res) => {
-  res.send('Hello from Express');
+  res.json({ message: 'Hello from the server!' });
 });
 
 const PORT = process.env.PORT || 3000;
