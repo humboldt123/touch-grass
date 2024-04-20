@@ -49,7 +49,7 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View style={[styles.participants, {top: -40}]}>
+      <View style={[styles.participants, {top: -60}]}>
         {attendees.map((imageUri, index) => (
           <Image
             key={index}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     shadowOffset: {width:0,height:4},
-    top: -60,
+    top: -80,
   },
   cardBackground: {
     width: 307,
