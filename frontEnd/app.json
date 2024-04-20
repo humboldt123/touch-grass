@@ -25,6 +25,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/inter/Lora_400Regular.ttf",
+            "node_modules/@expo-google-fonts/inter/Lora_700Bold.ttf"
+          ]
+        }
+      ]
+    ]
   }
 }
