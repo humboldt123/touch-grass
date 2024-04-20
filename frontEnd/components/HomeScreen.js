@@ -69,7 +69,7 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View style={styles.participants}>
+      <View style={[styles.participants, {top: -40}]}>
         {attendees.map((imageUri, index) => (
           <Image
             key={index}
@@ -77,15 +77,37 @@ const HomeScreen = () => {
             style={[styles.profileImage, { marginLeft: (index == 0) ? 0 : -15 }]}
           />
         ))}
-        <Text>
+        <Text style={[styles.lora]}>
           Basil, Mari and two others are attending
         </Text>
       </View>
+
+      <View style={styles.bottomToast}>
+        <Image source={{uri: "https://i.imgur.com/mTVi2qv.jpeg"}} style={styles.avatar} resizeMode="cover"/>
+      </View>
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  avatar: {
+    width: 75,
+    height: 75,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    top: -25,
+    borderRadius: 20,
+  },
+  bottomToast: {
+    backgroundColor: "#212121",
+    width: "100%",
+    height: 100,
+    position: "absolute",
+    bottom: 0,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
   lora: {
     fontFamily: "Lora_400Regular"
   },
@@ -111,7 +133,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     shadowOffset: {width:0,height:4},
-    top: -30,
+    top: -60,
   },
   cardBackground: {
     width: 307,
