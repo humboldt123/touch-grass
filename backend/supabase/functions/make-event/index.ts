@@ -74,10 +74,10 @@ type Event = {
 }
 
 function makeEvent(group: Group) {
-    const averageLoc = averageLoc(group.users);
+    const averageLocation = averageLoc(group.users);
     const event = {
         group,
-        location: averageLoc
+        location: averageLocation
     }
     console.log(event);
 }
