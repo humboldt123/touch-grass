@@ -16,7 +16,15 @@ serve(async (req) => {
         message: `Hello ${name}!`,
     }
 
-    const groups = [];
+    const groups: Group[] = [{
+        groupId: 1,
+        users: [
+            {
+                lat: 39.95,
+                lng: -75.2
+            }
+        ]
+    }];
 
     let eventsMade = 0;
     for (const group of groups) {
@@ -45,6 +53,12 @@ type Location = {
     lat: number;
 }
 
+function average(nums: number[]): number {
+    const count = nums.length;
+    const sum = nums.reduce((a, b) => a + b, 0);
+    return sum / count;
+}
+
 function averageLoc(users: User[]): Location {
     const averageLongitude = average(users.map((u) => u.lng));
     const averageLatitude = average(users.map((u) => u.lat));
@@ -54,14 +68,18 @@ function averageLoc(users: User[]): Location {
     };
 }
 
-function makeEvent(group: Group) {
-    const averageLoc = averageLoc(group.users);
+type Event = {
+    group: Group,
+    location: Location
 }
 
-function average(nums: number[]): number {
-    const count = nums.length;
-    const sum = nums.reduce((a, b) => a + b, 0);
-    return sum / count;
+function makeEvent(group: Group) {
+    const averageLoc = averageLoc(group.users);
+    const event = {
+        group,
+        location: averageLoc
+    }
+    console.log(event);
 }
 
 // To invoke:
