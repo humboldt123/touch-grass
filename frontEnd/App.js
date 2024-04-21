@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Animated, View, Text, Pressable, Image, StyleSheet, TextInput, SafeAreaView} from 'react-native';
 import { useFonts, Lora_400Regular, Lora_700Bold } from "@expo-google-fonts/lora";
-import { useRef } from 'react';
-
+import { useRef, Component } from 'react';
+import TagSelector from 'react-native-tag-selector';
 
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 
@@ -23,6 +23,13 @@ const App = () => {
   const [year, onChangeYear] = React.useState('');
   const [month, onChangeMonth] = React.useState('');
   const [day, onChangeDay] = React.useState('');
+  tagsMaster =     [
+    {id: 'quick',name: 'quick'},
+    {id: 'brown',name: 'brown'},
+    {id: 'fox',name: 'fox'}
+  ];
+  const [tags, changeTags] = React.useState(tagsMaster);
+
 
   const attendees = [
     'https://i.imgur.com/OVO1P48.jpeg',  
@@ -140,6 +147,7 @@ const App = () => {
             placeholderTextColor="#b8b8b8" 
             placeholder="Name"
           />
+          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Name</Text>
 
           <View style={[{flexDirection:'row', alignItems:'center'}]}>
           <TextInput
@@ -170,6 +178,19 @@ const App = () => {
             maxLength={4}
           />  
           </View>
+          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Date of Birth</Text>
+          <View
+            style={[{color: "#fefefe", marginLeft: 12, top: 20, marginBottom: 10}]}
+          >
+          <TagSelector
+            maxHeight={70}
+					  tags={tagsMaster}
+					  onChange={changeTags}
+            // style this but yeah its donie
+            />
+          </View>
+
+          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: 16, marginBottom: 10}]}>Interests</Text>
 
         </SafeAreaView>
       </Animated.View>
