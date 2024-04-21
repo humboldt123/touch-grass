@@ -33,7 +33,7 @@ app.post('/newUserProfile', (req, res) => {
     const userDataString = JSON.stringify(userData);
     let generatedGroupNumbers = [];
 
-    exec(`python mock_ai_model.py '${userDataString}'`, (error, stdout, stderr) => {
+    exec(`python3 mock_ai_model.py '${userDataString}'`, (error, stdout, stderr) => {
         if (error) {
             console.error(`exec error: ${error}`);
             return res.status(500).send('Error running the AI model');
@@ -43,19 +43,16 @@ app.post('/newUserProfile', (req, res) => {
             return res.status(500).send('AI model ran with errors');
         }
 
-        const groupNumber = stdout.trim();
+        const groupNumber = stdout.trim().split(',').map(num => parseInt(num.trim(), 10));;
         userData.groupNumber = groupNumber;
 
-        console.log(userData)
+        console.log("this is the data:" + userData)
         generatedGroupNumbers = groupNumber;
-        // insert to supabase database
-
-        res.status(200).json(userData);
-    });
-    postToSupabase(generatedGroupNumbers).then(() => {
-        res.send('Data sent to Supabase successfully');
-    }).catch(error => {
-        res.status(500).send('Failed to send data to Supabase');
+        postToSupabase(generatedGroupNumbers).then(() => {
+            res.send('Data sent to Supabase successfully');
+        }).catch(error => {
+            res.status(500).send('Failed to send data to Supabase');
+        });
     });
 });
 
