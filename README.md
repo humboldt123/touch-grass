@@ -25,11 +25,11 @@ The name was Naron's idea.
 
 **Our Process**
 
-Our project consists of a frontend and a backend. Vishnu mocked-up the frontend in Figma then implemented it in React Native. 
+We tried to work in parallel as much as possible. We mocked up the front end in Figma, and then implemented it in React Native. 
 
-Eric set up Supabase, found green space locations on OpenDataPhilly, created an [API for finding the nearest one](https://supabase.com/dashboard/project/qcmfqvuxuwebxbrbogje/api?rpc=nearby), and created a batch job for [generating events](https://supabase.com/dashboard/project/qcmfqvuxuwebxbrbogje/functions/make-event/details) for each group at the nearest location.
+At the same time, we set up Supabase, found green space locations on OpenDataPhilly (happy earth day!), created an [API for finding the nearest one](https://supabase.com/dashboard/project/qcmfqvuxuwebxbrbogje/api?rpc=nearby), and created a batch job for [generating events](https://supabase.com/dashboard/project/qcmfqvuxuwebxbrbogje/functions/make-event/details) for each group at the nearest location.
 
-The backend was built upon RESTful APIs. Which make numerous calls to the frontend, collecting user information while use our fine-tuned AI to put users into different social events group. After tagging each user, we made another call to the OpenAI API to generate the event and events description for the users suggestions.
+The rest of the backend was built upon RESTful APIs, which make numerous calls to the frontend, collecting user information while use our fine-tuned AI to put users into different social events group. After tagging each user, we make another call to the OpenAI API to generate the event and events description for the users suggestions.
 
 **Our Tech Stack**
 
