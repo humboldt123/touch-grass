@@ -38,7 +38,7 @@ We built the frontend in `React Native`, and used `Supabase`, `PostgreSQL`, `Pos
 
 **Data Sources**
 
-Green space is important to us. That's why we used Open Data Philly to find Community Gardens<sup>[[1](https://opendataphilly.org/datasets/registered-community-gardens/)]</sup>, Picnic Sites<sup>[[2](https://opendataphilly.org/datasets/ppr-picnic-sites/)]</sup> and Urban Agriculture<sup>[[3](https://opendataphilly.org/datasets/urban-agriculture-projects/)]</sup>
+Green space is important to us. That's why we used [Open Data Philly](https://opendataphilly.org/) to find Community Gardens<sup>[[1](https://opendataphilly.org/datasets/registered-community-gardens/)]</sup>, Picnic Sites<sup>[[2](https://opendataphilly.org/datasets/ppr-picnic-sites/)]</sup> and Urban Agriculture<sup>[[3](https://opendataphilly.org/datasets/urban-agriculture-projects/)]</sup>
 
 [Figma Mockup](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp) | [Canva Presentation](https://www.canva.com/design/DAGDC486pfs/aJ0URzSP3TpBWjlrLe2QOg/view)
 
