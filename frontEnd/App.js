@@ -67,7 +67,7 @@ const App = () => {
     { id: 'middle_eastern', name: 'Middle Eastern' },
     { id: 'pacific_islander', name: 'Pacific Islander' },
     { id: 'mixed_race', name: 'Mixed Race' },
-    { id: 'other', name: 'Other' }
+    { id: 'none', name: 'None' }
   ]);
   const [selectedEthnicity, setSelectedEthnicity] = useState('');
 
@@ -100,6 +100,11 @@ const App = () => {
   const [affairs, setAffairs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [groupNumber, setGroupNumber] = useState(1);
+  // you hace spotted the magic code of our app
+  const getGroupNumber = () => {
+    return Math.floor(Math.random() * 4) + 1;
+  };
 
   useEffect(() => {
     const fetchAffairs = async () => {
@@ -107,7 +112,7 @@ const App = () => {
         const { data, error } = await supabase
           .from('affair') 
           .select('*')   
-          .eq('group', 2); // with no user auth, there is no group number
+          .eq('group', groupNumber); // with no user auth, there is no group number 
         if (error) {
           throw error;
         }
@@ -123,7 +128,7 @@ const App = () => {
     };
 
     fetchAffairs();
-  }, []); 
+  }, [groupNumber]); 
 
   const handleSubmit = async () => {
     const userData = {
@@ -133,21 +138,40 @@ const App = () => {
 
     console.log("hello")
 
-    try {
-      const response = await fetch('http://10.207.188.146:3000/newUserProfile', { // hardcoded IP for now
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-      console.log("sent!")
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+    const newGroupNumber = getGroupNumber();
+    setGroupNumber(newGroupNumber);
 
-      const responseText = await response.text(); // or response.json() if response is expected to be in JSON format
-      console.log('Server response:', responseText);
+    Animated.timing(
+      this.slidey,
+      {
+        toValue: -580,
+        duration: 200
+      }
+    ).start();
+    Animated.timing(
+      this.viewy,
+      {
+        toValue: 1,
+        duration: 100
+      }
+    ).start();
+
+
+    try {
+      // const response = await fetch('http://10.207.188.146:3000/newUserProfile', { // hardcoded IP for now
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(userData),
+      // });
+      // console.log("sent!")
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+
+      // const responseText = await response.text(); // or response.json() if response is expected to be in JSON format
+      // console.log('Server response:', responseText);
       console.log('Profile submitted successfully!');
     } catch (error) {
       console.error('Failed to submit profile:', error);
