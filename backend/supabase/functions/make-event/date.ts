@@ -7,7 +7,10 @@ function getEventTime() {
 
 getEventTime();
 
-const tomorrow = new Date(new Date().to + (24 * 60 * 60));
-tomorrow.setTime((12 + 8) * 60 * 60)
+// const tomorrow = new Date(new Date().to + (24 * 60 * 60));
+// tomorrow.setTime((12 + 8) * 60 * 60)
+// console.log(tomorrow);
+const oneDayInMillis = 24 * 60 * 60 * 1000;
+let tomorrow = new Date(new Date().getTime() + oneDayInMillis);
+tomorrow.setHours(20, 0, 0, 0);
 console.log(tomorrow);
-console.log(new Date(new Date() + 1));
