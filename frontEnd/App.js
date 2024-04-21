@@ -76,9 +76,7 @@ const App = () => {
       { id: 'wheelchair_user', name: 'Wheelchair User' },
       { id: 'hearing_impaired', name: 'Hearing Impaired' },
       { id: 'cognitive_disabilities', name: 'Cognitive Disabilities' },
-      { id: 'autism_spectrum', name: 'Autism Spectrum' },
-      { id: 'mental_health_conditions', name: 'Mental Health Conditions' },
-      { id: 'other_disability', name: 'Other' }
+      { id: 'autism_spectrum', name: 'Autism Spectrum' }
   ]);
 
   const [selectedDisability, setSelectedDisability] = useState('');
@@ -211,7 +209,7 @@ const App = () => {
         <Text style={[styles.lora]}>
           Basil, Mari and two others are attending
         </Text>
-      </Animated.View.View>
+      </Animated.View>
 
       <Animated.View
         style={[styles.bottomToast, {bottom: slidey}]}
@@ -254,8 +252,8 @@ const App = () => {
         }}
       >
         <Image source={{uri: "https://i.imgur.com/mTVi2qv.jpeg"}} style={[styles.avatar]} resizeMode="cover"/>
-        <Text style={[styles.lora, {color: '#fefefe', textAlign: "center"}]}>Edit your profile &lt;3</Text>
-        <SafeAreaView style={[]}>
+        <Text style={[styles.lora, {color: '#fefefe', textAlign: "center", top: 22}]}>Edit your profile &lt;3</Text>
+        <SafeAreaView style={[{top: 20}]}>
           <TextInput
             style={[styles.input, styles.lora]}
             onChangeText={onChangeName}
@@ -357,9 +355,11 @@ const App = () => {
             />
           </View>
 
-          <MBTITags mbtiTags={mbtiTags} />
+          <View style={{top: 10}}>
+            <MBTITags mbtiTags={mbtiTags}/>
+          </View>
 
-          <Pressable onPress={handleSubmit} style={[{ marginTop: 20 }, styles.button]}>
+          <Pressable onPress={handleSubmit} style={[{ marginTop: 25 }, styles.button]}>
             <Text style={[{color: 'white'}, styles.text]}>Submit</Text>
           </Pressable>
 
