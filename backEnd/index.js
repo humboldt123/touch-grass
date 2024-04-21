@@ -83,4 +83,6 @@ app.post('/generateEvents', (req, res) => {
     console.log(completion.choices[0]);
 })
 
+const calculateGroupInfo = require('./calculateGroupInfo');
+app.get('/calculate', calculateGroupInfo);
 
