@@ -1,7 +1,7 @@
 
 <div align="center">
   <h1>Touch Grass</h1>
-  <p>Vishnu Menon, Naron Chen, Ramsha Perwez, Eric Riese, Chaitanya Shashi Kumar, and Siwu Li</p>
+  <p>Vishnu Menon, Naron Chen, Ramsha Perwez, Eric Riese, Chaitanya Kumar, and Siwu Li</p>
 </div>
 <br><br>
 
@@ -13,7 +13,9 @@
 
 **What is Touch Grass**
 
-Lorem ipsum dolor sit amet.
+We love bringing people together! Touch Grass is a cross-platform app that __leverages AI for social good__ to help facilitate connections between people we think vibe together. We do this by giving users the **freedom to select activities that interest them**. With everyone's preferences being sent to the backend, our AI matches people it thinks are a good fit, then invites the user to no more than **one activity per day** so as not to overwhelm. The user can then accept the invite (if they wish). People get together and have a fun time! 
+
+The name was Naron's idea.
 
 **How to Use the App**
 
