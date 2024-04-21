@@ -3,17 +3,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Animated, View, Text, Pressable, Image, StyleSheet, TextInput, SafeAreaView} from 'react-native';
 import { useFonts, Lora_400Regular, Lora_700Bold } from "@expo-google-fonts/lora";
-import { useRef, Component } from 'react';
+import { useRef, Component, useEffect, useState } from 'react';
 import TagSelector from 'react-native-tag-selector';
 import tag_styles from './TagStyle';
 
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import supabase from './supabaseClient';
 
 // NO MORE WARNINGS MY BELOVED <3
 // THANK YOU MISTER STACK OVERFLOW: https://stackoverflow.com/questions/35309385/how-do-you-hide-the-warnings-in-react-native-ios-simulator
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs()
+
 
 
 const App = () => {
@@ -24,6 +26,7 @@ const App = () => {
   const [year, onChangeYear] = React.useState('');
   const [month, onChangeMonth] = React.useState('');
   const [day, onChangeDay] = React.useState('');
+  
   tagsMaster =     [
     {id: 'walks', name: 'Walks'},
     {id: 'athletics', name: 'Athletics'},
@@ -38,7 +41,6 @@ const App = () => {
     {id: 'reading', name: 'Reading'},
   ];
   const [tags, changeTags] = React.useState();
-
   const [pressed, handlePress] = React.useState(false);
 
 
@@ -50,14 +52,72 @@ const App = () => {
     'https://i.imgur.com/tAfEMeW.jpeg',
     'https://i.imgur.com/ktEiIHL.jpeg',
   ];
-  const loadData = async () => {
+
+  // const loadData = async () => {
+  //   try {
+  //     const data = await fetchData();
+  //     console.log('Data received:', data);
+  //   } catch (error) {
+  //     console.log('Failed to fetch data:', error);
+  //   }
+  // };
+  const [affairs, setAffairs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAffairs = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('affair') 
+          .select('*')   
+          .eq('group', 2); // with no user auth, there is no group number
+        if (error) {
+          throw error;
+        }
+
+        setAffairs(data[0]);
+        console.log(data); // Log the fetched data
+      } catch (error) {
+        console.error('error', error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAffairs();
+  }, []); 
+
+  const handleSubmit = async () => {
+    const userData = {
+      name,
+      dob: `${year}-${month}-${day}`  // Assuming the server expects a date string
+    };
+
+    console.log("hello")
+
     try {
-      const data = await fetchData();
-      console.log('Data received:', data);
+      const response = await fetch('http://10.207.188.146:3000/newUserProfile', { // hardcoded IP for now
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      console.log("sent!")
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const responseText = await response.text(); // or response.json() if response is expected to be in JSON format
+      console.log('Server response:', responseText);
+      console.log('Profile submitted successfully!');
     } catch (error) {
-      console.log('Failed to fetch data:', error);
+      console.error('Failed to submit profile:', error);
+      alert('Failed to submit profile.');
     }
-  };
+  }
 
   let [fontsLoaded, fontError] = useFonts({
     Lora_400Regular, Lora_700Bold
@@ -66,20 +126,25 @@ const App = () => {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-  // fetch Data from localhost:3000
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://192.168.137.196:3000');
-      if (!response.ok) {  // Check if the HTTP status code is 200-299
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-      throw error;  // Re-throw to handle it in the calling context
-    }
-  };
+  // // fetch Data from localhost:3000
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch('http://192.168.137.196:3000');
+  //     if (!response.ok) {  // Check if the HTTP status code is 200-299
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Failed to fetch data:', error);
+  //     throw error;  // Re-throw to handle it in the calling context
+  //   }
+  // };
+  function formatDate(dateString) {
+    // const options = { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+    const options = {weekday: 'long', hour: '2-digit', minute: '2-digit'};
+    return new Date(dateString).toLocaleDateString('en-US', options);
+}
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dedede'}}>
@@ -87,9 +152,9 @@ const App = () => {
         <View style={styles.cardBackground}>
           <Image source={{uri: "https://schuylkillyards.com/sites/default/files/styles/max_1300x1300/public/gallery2020-07/0166-E057.jpg"}} style={[styles.banner, {top: -100}]} resizeMode="cover" blurRadius={3}/>
           <View style={{top: -50}}>
-            <Text style={[{textAlign: "center", fontSize: 30}, styles.lora]}>Event Name</Text>
-            <Text style={[{textAlign: "center", fontSize: 14, marginTop: 8}, styles.lora]}>129 S 30th St @ 12:00 PM </Text>
-            <Text style={[{marginTop: 40, marginLeft: 20, marginRight: 20}, styles.lora]}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nec dui nunc mattis enim ut. Enim ut sem viverra aliquet eget sit amet tellus. Non odio euismod lacinia at quis. Dictum non consectetur a erat nam at.</Text>
+            <Text style={[{textAlign: "center", fontSize: 30}, styles.lora]}>{affairs.event_name}</Text>
+            <Text style={[{textAlign: "center", fontSize: 14, marginTop: 8}, styles.lora]}>{affairs.location_name} @ {formatDate(affairs.start_time)}</Text>
+            <Text style={[{marginTop: 40, marginLeft: 20, marginRight: 20}, styles.lora]}>{affairs.description}</Text>
           </View>
           <Pressable style={pressed ? styles.button2 : styles.button} onPress={()=>{handlePress( pressed => !pressed);}}>
             <Text style={[styles.loraBold, {color: 'white'}]}>{pressed ? 'All set!' : 'Attend'}</Text>
@@ -213,6 +278,10 @@ const App = () => {
           </View>
 
           <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Interests</Text>
+
+          <Pressable onPress={handleSubmit}>
+            <Text>Submit</Text>
+          </Pressable>
 
         </SafeAreaView>
       </Animated.View>
