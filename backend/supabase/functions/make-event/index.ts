@@ -9,7 +9,7 @@ import * as postgres from 'https://deno.land/x/postgres@v0.17.0/mod.ts'
 
 // import * from 'npm:@js-joda/core@5.6.2'
 
-import { LocalDateTime, ChronoUnit, convert } from 'npm:@js-joda/core'
+import { LocalDateTime, ChronoUnit, convert } from 'npm:@js-joda/core@5.6.2'
 
 // Get the connection string from the environment variable "SUPABASE_DB_URL"
 const databaseUrl = Deno.env.get('SUPABASE_DB_URL')!

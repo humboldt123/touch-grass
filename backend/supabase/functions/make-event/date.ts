@@ -6,3 +6,8 @@ function getEventTime() {
 }
 
 getEventTime();
+
+const tomorrow = new Date(new Date().to + (24 * 60 * 60));
+tomorrow.setTime((12 + 8) * 60 * 60)
+console.log(tomorrow);
+console.log(new Date(new Date() + 1));
