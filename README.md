@@ -21,7 +21,7 @@ The name was Naron's idea.
 
 1. When you land you will be greeted with the main screen.
 2. Swipe-up from the bottom modal, and feel free to enter your name, birthday, and activities that might interest you.
-3. Swipe back down, and accept today's curated event, or wait until tommorow.
+3. Swipe back down and accept today's curated event, or wait until tommorow.
 
 **Our Process**
 
