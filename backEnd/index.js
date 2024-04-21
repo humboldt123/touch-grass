@@ -1,3 +1,4 @@
+const OpenAI = require("openai");
 const cors = require('cors');
 const express = require('express');
 const { exec } = require('child_process');
@@ -5,6 +6,7 @@ const app = express();
 app.use(cors()); // Enable CORS
 app.use(express.json());
 const supabase = require('./utils/supabase')
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY});
 
 app.get('/', (req, res) => {
     res.json({ message: 'Hello from the server!' });
@@ -19,6 +21,23 @@ async function postToSupabase(groupNums) {
     Promise.all(numsPromise).then((values) => {
         console.log("succedded");
     });
+}
+
+async function gptGenerateEvents(){
+    const completion = await openai.chat.completions.create({
+        messages: [{ role: "system", content: "You are a helpful assistant." }],
+        model: "gpt-3.5-turbo",
+    });
+    const eventsAndDes = completion.choices[0].message.content;
+    console.log("this is completion\n" + eventsAndDes);
+    var eventName = "swim";
+    var eventDes = "go to swim!";
+    const eventPairs = [];
+    eventPairs.push(await supabase.from('affair').insert([{ event_name: eventName, description: eventDes }]))
+    Promise.all(eventPairs).then((values) => {
+        console.log("succedded");
+    });
+    return completion;
 }
 
 const PORT = process.env.PORT || 3000;
@@ -55,4 +74,13 @@ app.post('/newUserProfile', (req, res) => {
         });
     });
 });
+
+app.post('/generateEvents', (req, res) => {
+    const group_events = [];
+
+    const completion = gptGenerateEvents();
+
+    console.log(completion.choices[0]);
+})
+
 
