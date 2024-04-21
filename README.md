@@ -31,21 +31,12 @@ Eric set up Supabase, found green space locations on OpenDataPhilly, created an 
 
 **Our Tech Stack**
 
-This is our tech stack:
-- React Native
-- Supabase
-  - PostgreSQL
-  - PostGIS
-  - Edge Functions with TypeScript and Deno
-- Python
-- Jupyter Notebooks
-- JavaScript
+We built the frontend in `React Native`, and used `Supabase`, `PostgreSQL`, `PostGIS` and `Edge Functions with Typescript and Deno` for our backend, as well as `Python`, `Juptyer Notebooks` and good old `JavaScript`.
 
-Data Sources:
-- Open Data Philly
-  - https://opendataphilly.org/datasets/registered-community-gardens/
-  - https://opendataphilly.org/datasets/ppr-picnic-sites/
-  - https://opendataphilly.org/datasets/urban-agriculture-projects/
+
+**Data Sources**
+
+Green space is important to us. That's why we used Open Data Philly for Community Gardens<sup>[[1](https://opendataphilly.org/datasets/registered-community-gardens/)]</sup>, Picnic Sites<sup>[[2](https://opendataphilly.org/datasets/ppr-picnic-sites/)]</sup> and Urban Agriculture<sup>[[3](https://opendataphilly.org/datasets/urban-agriculture-projects/)]</sup>
 
 [Figma Mockup](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp) | [Canva Presentation](https://www.canva.com/design/DAGDC486pfs/aJ0URzSP3TpBWjlrLe2QOg/view)
 
