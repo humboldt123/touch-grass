@@ -21,7 +21,7 @@ LogBox.ignoreAllLogs()
 
 const App = () => {
   this.slidey = useRef(new Animated.Value(-580)).current;
-  this.viewy = useRef(new Animated.Value(1)).current;
+  this.viewy = useRef(new Animated.Value(0)).current;
   
   const [name, onChangeName] = React.useState('');
   const [year, onChangeYear] = React.useState('');
@@ -200,7 +200,7 @@ const App = () => {
         </View>
       </Animated.View>
 
-      <View style={[styles.participants, {top: -30}]}>
+      <Animated.View style={[styles.participants, {top: -30}, {opacity: viewy}]}>
         {attendees.map((imageUri, index) => (
           <Image
             key={index}
@@ -211,7 +211,7 @@ const App = () => {
         <Text style={[styles.lora]}>
           Basil, Mari and two others are attending
         </Text>
-      </View>
+      </Animated.View.View>
 
       <Animated.View
         style={[styles.bottomToast, {bottom: slidey}]}
