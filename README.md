@@ -9,7 +9,7 @@
 
 
 > [!CAUTION]
-> ⭐ Our project for Philly Codefest 2024 is dangerously cool
+> ⭐ Our project for Philly Codefest 2024 is really cool
 
 **What is Touch Grass**
 
@@ -25,13 +25,13 @@ The name was Naron's idea.
 
 **Our Process**
 
-Our project consists of a frontend and a backend. Vishnu [mocked-up the frontend in Figma](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp?type=design&node-id=3%3A33&mode=design&t=znTvkfTHlbvYL2al-1) then implemented it in React Native. `/*todo: add whate everyone else was doing*/`
+Our project consists of a frontend and a backend. Vishnu mocked-up the frontend in Figma then implemented it in React Native. `/*todo: add whate everyone else was doing*/`
 
 Eric set up Supabase, found green space locations on OpenDataPhilly, created an API for finding the nearest one, and created a batch job for generating events for each group at the nearest location.
 
 **Our Tech Stack**
 
-We used the LIDSA tech-stack:
+This is our tech stack:
 - React Native
 - Supabase
   - PostgreSQL
@@ -46,6 +46,8 @@ Data Sources:
   - https://opendataphilly.org/datasets/registered-community-gardens/
   - https://opendataphilly.org/datasets/ppr-picnic-sites/
   - https://opendataphilly.org/datasets/urban-agriculture-projects/
+
+[Figma Mockup](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp) | [Canva Presentation](https://www.canva.com/design/DAGDC486pfs/aJ0URzSP3TpBWjlrLe2QOg/view)
 
 
 <br><br><br><br>
