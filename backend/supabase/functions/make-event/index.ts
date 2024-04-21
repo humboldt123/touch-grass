@@ -116,6 +116,7 @@ async function getGroups(): Promise<Group[]> {
             const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*)) users
                                                         from group_membership gm
                                                                  join person on person.id = gm.user
+                                                        where not exists (select * from affair e where e.group = gm.group)
                                                         group by gm.group;`;
             console.log(result);
             const groups = result.rows as Group[];
