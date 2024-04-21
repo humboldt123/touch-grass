@@ -21,11 +21,12 @@ serve(async (req) => {
 
     const groups: Group[] = await getGroups()
 
-    let events = [];
+    const events = [] as Event[];
     for (const group of groups) {
         events.push(makeEvent(group));
     }
-    console.log(events);
+    console.log(`Events`);
+    console.dir(events);
     insertEvents(req, events);
 
     return new Response(
@@ -40,7 +41,7 @@ type User = {
 }
 
 type Group = {
-    groupId: number;
+    group: BigInt;
     users: User[];
 }
 
@@ -73,8 +74,9 @@ type Event = {
 
 function makeEvent(group: Group): Event {
     const averageLocation = averageLoc(group.users);
+    console.log("group", group);
     const event: Event = {
-        group: group.groupId,
+        group: Number(group.group),
         ...averageLocation
     }
     console.log(event);
@@ -89,7 +91,9 @@ async function insertEvents(req: Request, events: Event[]) {
         { global: { headers: { Authorization: authHeader } } }
     );
 
-    supabaseClient.from('affair').insert(events);
+    for (const event of events) {
+        console.log("insertion", await supabaseClient.from('affair').insert(event));
+    }
 }
 
 async function getGroups(): Promise<Group[]> {
@@ -99,9 +103,9 @@ async function getGroups(): Promise<Group[]> {
         try {
             // Run a query
             const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*)) users
-                                                        from group_membership gm
-                                                                 join person on person.id = gm.user
-                                                        group by gm.group;`;
+                                                                                    from group_membership gm
+                                                                                    join person on person.id = gm.user
+                                                                                    group by gm.group;`;
             console.log(result);
             const groups = result.rows as Group[];
             // Return the response with the correct content type header
