@@ -7,6 +7,10 @@ import {SupabaseClient, createClient} from "https://esm.sh/@supabase/supabase-js
 
 import * as postgres from 'https://deno.land/x/postgres@v0.17.0/mod.ts'
 
+// import * from 'npm:@js-joda/core@5.6.2'
+
+import { LocalDateTime, ChronoUnit, convert } from 'npm:@js-joda/core'
+
 // Get the connection string from the environment variable "SUPABASE_DB_URL"
 const databaseUrl = Deno.env.get('SUPABASE_DB_URL')!
 
@@ -78,7 +82,8 @@ function averageLoc(users: User[]): Loc {
 type Event = {
     group: number,
     lat: number,
-    lng: number
+    lng: number,
+    start_time: string
 }
 
 function makeEvent(group: Group): Event {
@@ -86,10 +91,16 @@ function makeEvent(group: Group): Event {
     console.log("group", group);
     const event: Event = {
         group: Number(group.group),
-        ...averageLocation
+        ...averageLocation,
+        start_time: getEventTime()
     }
     console.log(event);
     return event;
+}
+
+function getEventTime() {
+    const x = LocalDateTime.now();
+    return convert(x.plusDays(1).withHour(20).truncatedTo(ChronoUnit.HOURS)).toDate();
 }
 
 async function insertEvents(req: Request, events: Event[]) {
