@@ -3,7 +3,7 @@
 // This enables autocomplete, go to definition, etc.
 
 import {serve} from "https://deno.land/std@0.131.0/http/server.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import {SupabaseClient, createClient} from "https://esm.sh/@supabase/supabase-js@2"
 
 import * as postgres from 'https://deno.land/x/postgres@v0.17.0/mod.ts'
 
@@ -18,38 +18,19 @@ const pool = new postgres.Pool(databaseUrl, 3, true)
  * Runs as a daily batch job.
  */
 serve(async (req) => {
-    // const {name} = await req.json()
-    // const data = {
-    //     message: `Hello ${name}!`,
-    // }
 
-    const authHeader = req.headers.get('Authorization')!
-    const supabaseClient = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-        { global: { headers: { Authorization: authHeader } } }
-    );
+    const groups: Group[] = await getGroups()
 
-    getGroups();
-
-    const groups: Group[] = [{
-        groupId: 1,
-        users: [
-            {
-                lat: 39.95,
-                lng: -75.2
-            }
-        ]
-    }];
-
-    let eventsMade = 0;
+    const events = [] as Event[];
     for (const group of groups) {
-        makeEvent(group);
-        eventsMade++;
+        events.push(makeEvent(group));
     }
+    console.log(`Events`);
+    console.dir(events);
+    insertEvents(req, events);
 
     return new Response(
-        JSON.stringify(`${eventsMade} events made`),
+        JSON.stringify(`${events.length} events made`),
         {headers: {"Content-Type": "application/json"}},
     )
 });
@@ -60,13 +41,22 @@ type User = {
 }
 
 type Group = {
-    groupId: number;
+    group: BigInt;
     users: User[];
 }
 
-type Location = {
+type Loc = {
     lng: number;
     lat: number;
+}
+
+type Location = {
+    id: number;
+    name: string;
+    type: string;
+    lat: number;
+    lng: number;
+    loc: number; // db id
 }
 
 function average(nums: number[]): number {
@@ -75,7 +65,8 @@ function average(nums: number[]): number {
     return sum / count;
 }
 
-function averageLoc(users: User[]): Location {
+function averageLoc(users: User[]): Loc {
+    console.log(users);
     const averageLongitude = average(users.map((u) => u.lng));
     const averageLatitude = average(users.map((u) => u.lat));
     return {
@@ -85,26 +76,44 @@ function averageLoc(users: User[]): Location {
 }
 
 type Event = {
-    group: Group,
-    location: Location
+    group: number,
+    lat: number,
+    lng: number
 }
 
-function makeEvent(group: Group) {
+function makeEvent(group: Group): Event {
     const averageLocation = averageLoc(group.users);
+    console.log("group", group);
     const event: Event = {
-        group,
-        location: averageLocation
+        group: Number(group.group),
+        ...averageLocation
     }
     console.log(event);
+    return event;
+}
+
+async function insertEvents(req: Request, events: Event[]) {
+    const authHeader = req.headers.get('Authorization')!
+    const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        {global: {headers: {Authorization: authHeader}}}
+    );
+
+    for (const event of events) {
+        const location = await findNearest(supabaseClient, event);
+        console.log({location});
+        console.log("insertion", await supabaseClient.from('affair').insert({...event, location_id: location.id}));
+    }
 }
 
 async function getGroups(): Promise<Group[]> {
     try {
-        const connection = await pool.connect()
+        const connection = await pool.connect();
 
         try {
             // Run a query
-            const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*))
+            const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*)) users
                                                         from group_membership gm
                                                                  join person on person.id = gm.user
                                                         group by gm.group;`;
@@ -122,8 +131,12 @@ async function getGroups(): Promise<Group[]> {
     return Promise.resolve([]);
 }
 
-// To invoke:
-// curl -i --location --request POST 'http://localhost:54321/functions/v1/' \
-//   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2X5WWHP-OEs_4qj0ssLNHzTs' \
-//   --header 'Content-Type: application/json' \
-//   --data '{"name":"Functions"}'
+type SupaClient = SupabaseClient<any, "public", any>;
+
+async function findNearest(supabase: SupabaseClient<any, "public", any>, averageLoc: Loc): Promise<Location> {
+    let {data, error} = await supabase
+        .rpc('nearby', {lat: averageLoc.lat, lng: averageLoc.lng})
+    if (error) console.error(error)
+    else console.log(data)
+    return data;
+}
