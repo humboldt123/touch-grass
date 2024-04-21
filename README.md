@@ -30,9 +30,20 @@ Our project consists of a frontend and a backend. Vishnu [mocked-up the frontend
 **Our Tech Stack**
 
 We used the LIDSA tech-stack:
-- Lorem
-- Ipsum
-- ...
+- React Native
+- Supabase
+  - PostgreSQL
+  - PostGIS
+  - Edge Functions with TypeScript and Deno
+- Python
+- Jupyter Notebooks
+- JavaScript
+
+Data Sources:
+- Open Data Philly
+  - https://opendataphilly.org/datasets/registered-community-gardens/
+  - https://opendataphilly.org/datasets/ppr-picnic-sites/
+  - https://opendataphilly.org/datasets/urban-agriculture-projects/
 
 
 <br><br><br><br>
