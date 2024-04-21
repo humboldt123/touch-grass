@@ -5,6 +5,7 @@ import { Animated, View, Text, Pressable, Image, StyleSheet, TextInput, SafeArea
 import { useFonts, Lora_400Regular, Lora_700Bold } from "@expo-google-fonts/lora";
 import { useRef, Component } from 'react';
 import TagSelector from 'react-native-tag-selector';
+import tag_styles from './TagStyle';
 
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 
@@ -24,11 +25,23 @@ const App = () => {
   const [month, onChangeMonth] = React.useState('');
   const [day, onChangeDay] = React.useState('');
   tagsMaster =     [
-    {id: 'quick',name: 'quick'},
-    {id: 'brown',name: 'brown'},
-    {id: 'fox',name: 'fox'}
+    {id: 'walks', name: 'Walks'},
+    {id: 'athletics', name: 'Athletics'},
+    {id: 'board_games', name: 'Board Games'},
+    {id: 'video_games', name: 'Video Games'},
+    {id: 'animals', name: 'Animals'},
+    {id: 'nature', name: 'Nature'},
+    {id: 'singing', name: 'Singing'},
+    {id: 'coding', name: 'Coding'},
+    {id: 'art', name: 'Art'},
+    {id: 'food', name: 'Food'},
+    {id: 'reading', name: 'Reading'},
   ];
-  const [tags, changeTags] = React.useState(tagsMaster);
+  const [tags, changeTags] = React.useState();
+
+  const [pressed, handlePress] = React.useState(false);
+
+
 
 
   const attendees = [
@@ -78,8 +91,8 @@ const App = () => {
             <Text style={[{textAlign: "center", fontSize: 14, marginTop: 8}, styles.lora]}>129 S 30th St @ 12:00 PM </Text>
             <Text style={[{marginTop: 40, marginLeft: 20, marginRight: 20}, styles.lora]}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nec dui nunc mattis enim ut. Enim ut sem viverra aliquet eget sit amet tellus. Non odio euismod lacinia at quis. Dictum non consectetur a erat nam at.</Text>
           </View>
-          <Pressable style={styles.button}>
-            <Text style={[styles.loraBold, {color: 'white'}]}>Attend</Text>
+          <Pressable style={pressed ? styles.button2 : styles.button} onPress={()=>{handlePress( pressed => !pressed);}}>
+            <Text style={[styles.loraBold, {color: 'white'}]}>{pressed ? 'All set!' : 'Attend'}</Text>
           </Pressable>
         </View>
       </Animated.View>
@@ -107,14 +120,14 @@ const App = () => {
               this.slidey,
               {
                 toValue: 0,
-                duration: 500
+                duration: 200
               }
             ).start();
             Animated.timing(
               this.viewy,
               {
                 toValue: 0,
-                duration: 500
+                duration: 200
               }
             ).start();
           }
@@ -124,14 +137,14 @@ const App = () => {
               this.slidey,
               {
                 toValue: -580,
-                duration: 500
+                duration: 200
               }
             ).start();
             Animated.timing(
               this.viewy,
               {
                 toValue: 1,
-                duration: 400
+                duration: 100
               }
             ).start();
           }
@@ -183,14 +196,23 @@ const App = () => {
             style={[{color: "#fefefe", marginLeft: 12, top: 20, marginBottom: 10}]}
           >
           <TagSelector
-            maxHeight={70}
+            maxHeight={200}
 					  tags={tagsMaster}
 					  onChange={changeTags}
+            expandCaptions={["", ""]}
+            expdandedContainerStyle = {[tag_styles.containerExpanded, styles.lora]}
+            containerStyle = {[tag_styles.container, styles.lora]}
+            selectedTagStyle = {[tag_styles.tagSelected, styles.lora]}
+            tagStyle = {[tag_styles.tag, styles.lora]}
+            separatorStyle = {[tag_styles.separator, styles.lora]}
+            expandBtnStyle = {[tag_styles.btnStyle, styles.lora]}
+            expandTextStyle = {[tag_styles.btnText, styles.lora]}
+            tagstyl
             // style this but yeah its donie
             />
           </View>
 
-          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: 16, marginBottom: 10}]}>Interests</Text>
+          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Interests</Text>
 
         </SafeAreaView>
       </Animated.View>
@@ -255,6 +277,21 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: '#E85380',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    shadowOffset: {width:2,height:4},
+  },
+  button2: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    marginLeft: 40,
+    marginRight: 40,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#b08492',
+    opacity: 0.5,
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 2,
