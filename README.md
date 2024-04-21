@@ -9,26 +9,30 @@
 
 
 > [!CAUTION]
-> ⭐ Our project for Philly Codefest 2024 (Super Cool)
+> ⭐ Our project for Philly Codefest 2024 is dangerously cool
 
 **What is Touch Grass**
 
-We love bringing people together! Touch Grass is a cross-platform app that __leverages AI for social good__ to help facilitate connections between people we think vibe together. We do this by giving users the **freedom to select activities that interest them**. With everyone's preferences being sent to the backend, our AI matches people it thinks are a good fit, then invites the user to no more than **one activity per day** so as not to overwhelm. The user can then accept the invite (if they wish). People get together and have a fun time! 
+We love bringing people together! Touch Grass is a cross-platform app that __leverages AI for social good__ to help facilitate connections between people we think vibe together. We do this by giving users the **freedom to select activities that interest them**. With everyone's preferences being sent to the backend, our AI matches people it thinks are a good fit, then invites the user to no more than **one activity per day** so as not to overwhelm. This brings people together, which is where the magic happens!
 
 The name was Naron's idea.
 
 **How to Use the App**
 
-Lorem ipsum dolor sit amet.
+1. When you land you will be greeted with the main screen.
+2. Swipe-up from the bottom modal, and feel free to enter your name, birthday, and activities that might interest you.
+3. Swipe back down, and accept today's curated event, or wait until tommorow.
 
 **Our Process**
 
-Lorem ipsum dolor sit amet.
+Our project consists of a frontend and a backend. Vishnu [mocked-up the frontend in Figma](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp?type=design&node-id=3%3A33&mode=design&t=znTvkfTHlbvYL2al-1) then implemented it in React Native. `/*todo: add whate everyone else was doing*/`
 
 **Our Tech Stack**
 
-Lorem ipsum dolor sit amet.
-
+We used the LIDSA tech-stack:
+- Lorem
+- Ipsum
+- ...
 
 
 <br><br><br><br>
