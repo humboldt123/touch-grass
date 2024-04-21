@@ -1,6 +1,6 @@
 const supabase = require('./utils/supabase'); // Ensure this path matches your Supabase client path
 
-async function calculateGroupInfo(req, res) {
+async function calculateGroupInfo(req, res, next) {
   try {
     const { data, error } = await supabase
       .from('person')
@@ -108,7 +108,8 @@ async function calculateGroupInfo(req, res) {
       throw error;
     }
 
-    res.json(data);
+    req.groupInfoStrings = groupInfoStrings;
+    next();
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
