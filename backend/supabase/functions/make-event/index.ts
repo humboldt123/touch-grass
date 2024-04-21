@@ -7,6 +7,8 @@ import {SupabaseClient, createClient} from "https://esm.sh/@supabase/supabase-js
 
 import * as postgres from 'https://deno.land/x/postgres@v0.17.0/mod.ts'
 
+// import * from 'npm:@js-joda/core@5.6.2'
+
 // Get the connection string from the environment variable "SUPABASE_DB_URL"
 const databaseUrl = Deno.env.get('SUPABASE_DB_URL')!
 
@@ -78,7 +80,8 @@ function averageLoc(users: User[]): Loc {
 type Event = {
     group: number,
     lat: number,
-    lng: number
+    lng: number,
+    start_time: string
 }
 
 function makeEvent(group: Group): Event {
@@ -86,10 +89,18 @@ function makeEvent(group: Group): Event {
     console.log("group", group);
     const event: Event = {
         group: Number(group.group),
-        ...averageLocation
+        ...averageLocation,
+        start_time: getEventTime().toJSON()
     }
     console.log(event);
     return event;
+}
+
+function getEventTime() {
+    const oneDayInMillis = 24 * 60 * 60 * 1000;
+    let tomorrow = new Date(new Date().getTime() + oneDayInMillis);
+    tomorrow.setHours(20, 0, 0, 0);
+    return tomorrow;
 }
 
 async function insertEvents(req: Request, events: Event[]) {
@@ -116,6 +127,7 @@ async function getGroups(): Promise<Group[]> {
             const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*)) users
                                                         from group_membership gm
                                                                  join person on person.id = gm.user
+                                                        where not exists (select * from affair e where e.group = gm.group)
                                                         group by gm.group;`;
             console.log(result);
             const groups = result.rows as Group[];
