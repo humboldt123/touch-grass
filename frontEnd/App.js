@@ -1,12 +1,29 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { View, Text, Pressable, Image, StyleSheet} from 'react-native';
+import { Animated, View, Text, Pressable, Image, StyleSheet, TextInput, SafeAreaView} from 'react-native';
 import { useFonts, Lora_400Regular, Lora_700Bold } from "@expo-google-fonts/lora";
+import { useRef } from 'react';
 
-const Stack = createNativeStackNavigator();
+
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+
+// NO MORE WARNINGS MY BELOVED <3
+// THANK YOU MISTER STACK OVERFLOW: https://stackoverflow.com/questions/35309385/how-do-you-hide-the-warnings-in-react-native-ios-simulator
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs()
+
 
 const App = () => {
+  this.slidey = useRef(new Animated.Value(-580)).current;
+  this.viewy = useRef(new Animated.Value(1)).current;
+  
+  const [name, onChangeName] = React.useState('');
+  const [year, onChangeYear] = React.useState('');
+  const [month, onChangeMonth] = React.useState('');
+  const [day, onChangeDay] = React.useState('');
+
   const attendees = [
     'https://i.imgur.com/OVO1P48.jpeg',  
     'https://i.imgur.com/YLZpUuH.jpeg',
@@ -46,7 +63,7 @@ const App = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dedede'}}>
-      <View style={styles.card}>
+      <Animated.View style={[styles.card, {opacity: viewy}]}>
         <View style={styles.cardBackground}>
           <Image source={{uri: "https://schuylkillyards.com/sites/default/files/styles/max_1300x1300/public/gallery2020-07/0166-E057.jpg"}} style={[styles.banner, {top: -100}]} resizeMode="cover" blurRadius={3}/>
           <View style={{top: -50}}>
@@ -58,9 +75,9 @@ const App = () => {
             <Text style={[styles.loraBold, {color: 'white'}]}>Attend</Text>
           </Pressable>
         </View>
-      </View>
+      </Animated.View>
 
-      <View style={[styles.participants, {top: -60}]}>
+      <View style={[styles.participants, {top: -30}]}>
         {attendees.map((imageUri, index) => (
           <Image
             key={index}
@@ -73,16 +90,117 @@ const App = () => {
         </Text>
       </View>
 
-      <View style={styles.bottomToast}>
-        <Image source={{uri: "https://i.imgur.com/mTVi2qv.jpeg"}} style={styles.avatar} resizeMode="cover"/>
-      </View>
+      <Animated.View
+        style={[styles.bottomToast, {bottom: slidey}]}
+        onTouchStart={e=> this.touchY = e.nativeEvent.pageY}
+        onTouchEnd={e => {
+          if (this.touchY - e.nativeEvent.pageY > 20) {
+            // handle swipe up
+            Animated.timing(
+              this.slidey,
+              {
+                toValue: 0,
+                duration: 500
+              }
+            ).start();
+            Animated.timing(
+              this.viewy,
+              {
+                toValue: 0,
+                duration: 500
+              }
+            ).start();
+          }
+          else if (e.nativeEvent.pageY - this.touchY > 20) {
+            // handle swipe down (also make sure we rn't in a menu)
+            Animated.timing(
+              this.slidey,
+              {
+                toValue: -580,
+                duration: 500
+              }
+            ).start();
+            Animated.timing(
+              this.viewy,
+              {
+                toValue: 1,
+                duration: 400
+              }
+            ).start();
+          }
+        }}
+      >
+        <Image source={{uri: "https://i.imgur.com/mTVi2qv.jpeg"}} style={[styles.avatar]} resizeMode="cover"/>
+        <Text style={[styles.lora, {color: '#fefefe', top: 25, textAlign: "center"}]}>Edit your profile &lt;3</Text>
+        <SafeAreaView style={[{top: 50}]}>
+          <TextInput
+            style={[styles.input, styles.lora]}
+            onChangeText={onChangeName}
+            value={name}
+            placeholderTextColor="#b8b8b8" 
+            placeholder="Name"
+          />
+
+          <View style={[{flexDirection:'row', alignItems:'center'}]}>
+          <TextInput
+            style={[styles.input, styles.lora, styles.ff]}
+            onChangeText={onChangeMonth}
+            value={month}
+            placeholderTextColor="#b8b8b8" 
+            placeholder="MM"
+            keyboardType="numeric"
+            maxLength={2}
+          />  
+          <TextInput
+            style={[styles.input, styles.lora, styles.ff]}
+            onChangeText={onChangeDay}
+            value={day}
+            placeholderTextColor="#b8b8b8" 
+            placeholder="DD"
+            keyboardType="numeric"
+            maxLength={2}
+          />  
+          <TextInput
+            style={[styles.input, styles.lora, styles.ffff]}
+            onChangeText={onChangeYear}
+            value={year}
+            placeholderTextColor="#b8b8b8" 
+            placeholder="YYYY"
+            keyboardType="numeric"
+            maxLength={4}
+          />  
+          </View>
+
+        </SafeAreaView>
+      </Animated.View>
 
     </View>
   );
 };
 
 
+
 const styles = StyleSheet.create({
+  ff: {
+    width: 60,
+  },
+  ffff: {
+    width: 120,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: "#dedede",
+    color: "#dedede",
+    borderRadius: 2,
+    backgroundColor: "rgba(0.1, 0.1, 0.1, 0.15)",
+    borderTopColor: "rgba(0, 0, 0, 0)",
+    borderRightColor: "rgba(0, 0, 0, 0)",
+    borderLeftColor: "rgba(0, 0, 0, 0)",
+    fontSize: 18,
+  },
   avatar: {
     width: 75,
     height: 75,
@@ -94,11 +212,12 @@ const styles = StyleSheet.create({
   bottomToast: {
     backgroundColor: "#212121",
     width: "100%",
-    height: 100,
+    height: 680,
     position: "absolute",
     bottom: 0,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    elevation: 3,  
   },
   lora: {
     fontFamily: "Lora_400Regular"
@@ -125,7 +244,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     shadowOffset: {width:0,height:4},
-    top: -80,
+    top: -50,
   },
   cardBackground: {
     width: 307,
