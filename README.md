@@ -25,7 +25,7 @@ The name was Naron's idea.
 
 **Our Process**
 
-Our project consists of a frontend and a backend. Vishnu mocked-up the frontend in Figma then implemented it in React Native. `/*todo: add whate everyone else was doing*/`
+Our project consists of a frontend and a backend. Vishnu mocked-up the frontend in Figma then implemented it in React Native. `/*todo: add what everyone else was doing, please this is important */`
 
 Eric set up Supabase, found green space locations on OpenDataPhilly, created an API for finding the nearest one, and created a batch job for generating events for each group at the nearest location.
 
@@ -36,7 +36,7 @@ We built the frontend in `React Native`, and used `Supabase`, `PostgreSQL`, `Pos
 
 **Data Sources**
 
-Green space is important to us. That's why we used Open Data Philly for Community Gardens<sup>[[1](https://opendataphilly.org/datasets/registered-community-gardens/)]</sup>, Picnic Sites<sup>[[2](https://opendataphilly.org/datasets/ppr-picnic-sites/)]</sup> and Urban Agriculture<sup>[[3](https://opendataphilly.org/datasets/urban-agriculture-projects/)]</sup>
+Green space is important to us. That's why we used Open Data Philly to find Community Gardens<sup>[[1](https://opendataphilly.org/datasets/registered-community-gardens/)]</sup>, Picnic Sites<sup>[[2](https://opendataphilly.org/datasets/ppr-picnic-sites/)]</sup> and Urban Agriculture<sup>[[3](https://opendataphilly.org/datasets/urban-agriculture-projects/)]</sup>
 
 [Figma Mockup](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp) | [Canva Presentation](https://www.canva.com/design/DAGDC486pfs/aJ0URzSP3TpBWjlrLe2QOg/view)
 
