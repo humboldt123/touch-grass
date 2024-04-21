@@ -25,6 +25,7 @@ serve(async (req) => {
     for (const group of groups) {
         events.push(makeEvent(group));
     }
+    console.log(events);
     insertEvents(req, events);
 
     return new Response(
@@ -55,6 +56,7 @@ function average(nums: number[]): number {
 }
 
 function averageLoc(users: User[]): Location {
+    console.log(users);
     const averageLongitude = average(users.map((u) => u.lng));
     const averageLatitude = average(users.map((u) => u.lat));
     return {
@@ -64,16 +66,18 @@ function averageLoc(users: User[]): Location {
 }
 
 type Event = {
-    group: Group,
-    location: Location
+    group: number,
+    lat: number,
+    lng: number
 }
 
 function makeEvent(group: Group): Event {
     const averageLocation = averageLoc(group.users);
     const event: Event = {
-        group,
-        location: averageLocation
+        group: group.groupId,
+        ...averageLocation
     }
+    console.log(event);
     return event;
 }
 
@@ -94,7 +98,7 @@ async function getGroups(): Promise<Group[]> {
 
         try {
             // Run a query
-            const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*))
+            const result = await connection.queryObject`select gm.group, json_agg(row_to_json(person.*)) users
                                                         from group_membership gm
                                                                  join person on person.id = gm.user
                                                         group by gm.group;`;
