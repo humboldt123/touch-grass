@@ -8,7 +8,6 @@ app.use(cors()); // Enable CORS
 app.use(express.json());
 const supabase = require('./utils/supabase')
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY});
-
 app.get('/', (req, res) => {
     res.json({ message: 'Hello from the server!' });
 });

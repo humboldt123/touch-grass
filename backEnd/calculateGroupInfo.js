@@ -101,7 +101,7 @@ async function calculateGroupInfo(req, res, next) {
               `Astrology Signs: ${Object.entries(stats.astrologySigns).map(([sign, percentage]) => `${sign}: ${percentage}`).join(', ')}`;
     });
   
-  console.log(groupInfoStrings); // This will log the array of strings, each representing one group's info
+  // console.log(groupInfoStrings); // This will log the array of strings, each representing one group's info
   
     
     if (error) {
