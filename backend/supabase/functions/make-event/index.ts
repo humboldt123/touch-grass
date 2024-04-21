@@ -18,38 +18,17 @@ const pool = new postgres.Pool(databaseUrl, 3, true)
  * Runs as a daily batch job.
  */
 serve(async (req) => {
-    // const {name} = await req.json()
-    // const data = {
-    //     message: `Hello ${name}!`,
-    // }
 
-    const authHeader = req.headers.get('Authorization')!
-    const supabaseClient = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-        { global: { headers: { Authorization: authHeader } } }
-    );
+    const groups: Group[] = await getGroups()
 
-    getGroups();
-
-    const groups: Group[] = [{
-        groupId: 1,
-        users: [
-            {
-                lat: 39.95,
-                lng: -75.2
-            }
-        ]
-    }];
-
-    let eventsMade = 0;
+    let events = [];
     for (const group of groups) {
-        makeEvent(group);
-        eventsMade++;
+        events.push(makeEvent(group));
     }
+    insertEvents(req, events);
 
     return new Response(
-        JSON.stringify(`${eventsMade} events made`),
+        JSON.stringify(`${events.length} events made`),
         {headers: {"Content-Type": "application/json"}},
     )
 });
@@ -89,13 +68,24 @@ type Event = {
     location: Location
 }
 
-function makeEvent(group: Group) {
+function makeEvent(group: Group): Event {
     const averageLocation = averageLoc(group.users);
     const event: Event = {
         group,
         location: averageLocation
     }
-    console.log(event);
+    return event;
+}
+
+async function insertEvents(req: Request, events: Event[]) {
+    const authHeader = req.headers.get('Authorization')!
+    const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        { global: { headers: { Authorization: authHeader } } }
+    );
+
+    supabaseClient.from('affair').insert(events);
 }
 
 async function getGroups(): Promise<Group[]> {
@@ -121,9 +111,3 @@ async function getGroups(): Promise<Group[]> {
     }
     return Promise.resolve([]);
 }
-
-// To invoke:
-// curl -i --location --request POST 'http://localhost:54321/functions/v1/' \
-//   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2X5WWHP-OEs_4qj0ssLNHzTs' \
-//   --header 'Content-Type: application/json' \
-//   --data '{"name":"Functions"}'
