@@ -27,6 +27,8 @@ The name was Naron's idea.
 
 Our project consists of a frontend and a backend. Vishnu [mocked-up the frontend in Figma](https://www.figma.com/file/kGjD61HmgKpH2Q7C2CH1hZ/TouchGrassApp?type=design&node-id=3%3A33&mode=design&t=znTvkfTHlbvYL2al-1) then implemented it in React Native. `/*todo: add whate everyone else was doing*/`
 
+Eric set up Supabase, found green space locations on OpenDataPhilly, created an API for finding the nearest one, and created a batch job for generating events for each group at the nearest location.
+
 **Our Tech Stack**
 
 We used the LIDSA tech-stack:
