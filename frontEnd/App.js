@@ -9,6 +9,7 @@ import tag_styles from './TagStyle';
 
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import supabase from './supabaseClient';
+import MBTITags from './MBTITags';
 
 // NO MORE WARNINGS MY BELOVED <3
 // THANK YOU MISTER STACK OVERFLOW: https://stackoverflow.com/questions/35309385/how-do-you-hide-the-warnings-in-react-native-ios-simulator
@@ -43,7 +44,44 @@ const App = () => {
   const [tags, changeTags] = React.useState();
   const [pressed, handlePress] = React.useState(false);
 
+  const personalityTags = [
+    { id: 'introvert', name: 'Introvert' },
+    { id: 'extrovert', name: 'Extrovert' },
+    { id: 'undecided', name: 'Undecided' }
+  ];
+  const [personalityType, setPersonalityType] = useState('');
 
+  const [mbtiTags, setMbtiTags] = useState([
+    'ISTJ', 'ISTP', 'ISFJ', 'ISFP',
+    'INFJ', 'INFP', 'INTJ', 'INTP',
+    'ESTP', 'ESTJ', 'ESFP', 'ESFJ',
+    'ENFP', 'ENFJ', 'ENTP', 'ENTJ'
+  ]);
+
+  const [ethnicityTags] = useState([
+    { id: 'caucasian', name: 'Caucasian' },
+    { id: 'african_american', name: 'African American' },
+    { id: 'hispanic', name: 'Hispanic' },
+    { id: 'asian', name: 'Asian' },
+    { id: 'native_american', name: 'Native American' },
+    { id: 'middle_eastern', name: 'Middle Eastern' },
+    { id: 'pacific_islander', name: 'Pacific Islander' },
+    { id: 'mixed_race', name: 'Mixed Race' },
+    { id: 'other', name: 'Other' }
+  ]);
+  const [selectedEthnicity, setSelectedEthnicity] = useState('');
+
+     // Disability Tags
+     const [disabilityTags] = useState([
+      { id: 'wheelchair_user', name: 'Wheelchair User' },
+      { id: 'hearing_impaired', name: 'Hearing Impaired' },
+      { id: 'cognitive_disabilities', name: 'Cognitive Disabilities' },
+      { id: 'autism_spectrum', name: 'Autism Spectrum' },
+      { id: 'mental_health_conditions', name: 'Mental Health Conditions' },
+      { id: 'other_disability', name: 'Other' }
+  ]);
+
+  const [selectedDisability, setSelectedDisability] = useState('');
 
 
   const attendees = [
@@ -216,8 +254,8 @@ const App = () => {
         }}
       >
         <Image source={{uri: "https://i.imgur.com/mTVi2qv.jpeg"}} style={[styles.avatar]} resizeMode="cover"/>
-        <Text style={[styles.lora, {color: '#fefefe', top: 25, textAlign: "center"}]}>Edit your profile &lt;3</Text>
-        <SafeAreaView style={[{top: 50}]}>
+        <Text style={[styles.lora, {color: '#fefefe', textAlign: "center"}]}>Edit your profile &lt;3</Text>
+        <SafeAreaView style={[]}>
           <TextInput
             style={[styles.input, styles.lora]}
             onChangeText={onChangeName}
@@ -225,7 +263,7 @@ const App = () => {
             placeholderTextColor="#b8b8b8" 
             placeholder="Name"
           />
-          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Name</Text>
+          {/* <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16}]}>Name</Text> */}
 
           <View style={[{flexDirection:'row', alignItems:'center'}]}>
           <TextInput
@@ -256,9 +294,10 @@ const App = () => {
             maxLength={4}
           />  
           </View>
-          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Date of Birth</Text>
+          {/* <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Date of Birth</Text> */}
+          
           <View
-            style={[{color: "#fefefe", marginLeft: 12, top: 20, marginBottom: 10}]}
+            style={[{color: "#fefefe", marginLeft: 12, marginTop: 5, marginBottom: 10}]}
           >
           <TagSelector
             maxHeight={200}
@@ -276,11 +315,52 @@ const App = () => {
             // style this but yeah its donie
             />
           </View>
+          {/* <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, marginBottom: 10, top: 10}]}>Interests</Text> */}
 
-          <Text style={[styles.lora, {color: "#fefefe", marginLeft: 16, top: -4, marginBottom: 10}]}>Interests</Text>
+          <View
+            style={[{color: "#fefefe", marginLeft: 12, marginTop: 5, marginBottom: 12}]}
+          >
+          <TagSelector
+            maxHeight={200}
+					  tags={personalityTags}
+					  onChange={setPersonalityType}
+            expandCaptions={["", ""]}
+            expdandedContainerStyle = {[tag_styles.containerExpanded, styles.lora]}
+            containerStyle = {[tag_styles.container, styles.lora]}
+            selectedTagStyle = {[tag_styles.tagSelected, styles.lora]}
+            tagStyle = {[tag_styles.tag, styles.lora]}
+            separatorStyle = {[tag_styles.separator, styles.lora]}
+            expandBtnStyle = {[tag_styles.btnStyle, styles.lora]}
+            expandTextStyle = {[tag_styles.btnText, styles.lora]}
+            tagstyl
+            // style this but yeah its donie
+            />
+          </View>
 
-          <Pressable onPress={handleSubmit}>
-            <Text>Submit</Text>
+          <View
+            style={[{color: "#fefefe", marginLeft: 12, marginTop: 5, marginBottom: 12}]}
+          >
+          <TagSelector
+            maxHeight={200}
+					  tags={disabilityTags}
+					  onChange={setSelectedDisability}
+            expandCaptions={["", ""]}
+            expdandedContainerStyle = {[tag_styles.containerExpanded, styles.lora]}
+            containerStyle = {[tag_styles.container, styles.lora]}
+            selectedTagStyle = {[tag_styles.tagSelected, styles.lora]}
+            tagStyle = {[tag_styles.tag, styles.lora]}
+            separatorStyle = {[tag_styles.separator, styles.lora]}
+            expandBtnStyle = {[tag_styles.btnStyle, styles.lora]}
+            expandTextStyle = {[tag_styles.btnText, styles.lora]}
+            tagstyl
+            // style this but yeah its donie
+            />
+          </View>
+
+          <MBTITags mbtiTags={mbtiTags} />
+
+          <Pressable onPress={handleSubmit} style={[{ marginTop: 20 }, styles.button]}>
+            <Text style={[{color: 'white'}, styles.text]}>Submit</Text>
           </Pressable>
 
         </SafeAreaView>
