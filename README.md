@@ -1,7 +1,7 @@
 
 <div align="center">
   <h1>Touch Grass</h1>
-  <p>Vishnu Menon, Naron Chen, Ramsha Perwez, Eric Riese, Chaitanya Kumar, and Siwu Li</p>
+  <p>Vishnu Menon, Naron Chen, Ramsha Perwez, Eric Riese, Chaitanya Shashi Kumar, and Siwu Li</p>
 </div>
 <br><br>
 
